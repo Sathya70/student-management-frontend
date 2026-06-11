@@ -1,57 +1,73 @@
-/* Full background like login & home */
 .admin-dashboard-container {
-  min-height: 100vh;
-  background: linear-gradient(120deg, #e3f2fd, #bbdefb);
-  padding: 40px 20px;
-  display: flex;
-  justify-content: center;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
 }
 
-/* Card container */
-.admin-dashboard-card {
-  background: #fff;
-  width: 600px;
-  padding: 35px 30px;
-  border-radius: 18px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  animation: fadeIn 0.7s ease-in-out;
-}
-
-/* Title */
 .dashboard-title {
   text-align: center;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
-  margin-bottom: 25px;
+  color: #1a1a2e;
+  margin-bottom: 6px;
 }
 
-/* Buttons */
-.dashboard-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+.dashboard-subtitle {
+  text-align: center;
+  color: #888;
+  margin-bottom: 32px;
+  font-size: 14px;
 }
 
-.dashboard-btn {
-  width: 200px;
-  padding: 12px;
-  font-size: 16px;
-  border-radius: 30px;
-  transition: 0.3s;
+/* ✅ Responsive grid — 3 columns on desktop, 2 on tablet, 1 on mobile */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
-.dashboard-btn:hover {
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dashboard-card-link {
+  text-decoration: none;
+}
+
+.dashboard-card {
+  border-radius: 12px;
+  padding: 24px 20px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.dashboard-card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 
-/* Smooth animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.dashboard-card-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.dashboard-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.dashboard-card-desc {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.5;
 }

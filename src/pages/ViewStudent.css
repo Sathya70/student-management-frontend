@@ -1,67 +1,50 @@
-/* Main container styling */
-.view-students-container {
-  padding: 20px;
-  background-color: #f7f9fc;
-  min-height: 100vh;
-}
+/* ✅ Add these at the bottom of your existing ViewStudent.css */
 
-/* Title */
-.view-students-title {
-  font-size: 24px;
-  font-weight: bold;
+.view-students-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
   margin-bottom: 20px;
 }
 
-/* Table styling */
-.table-custom {
-  background: white;
+.student-count {
+  font-size: 13px;
+  color: #888;
+  margin-top: 2px;
+  display: block;
+}
+
+/* ✅ Search input */
+.search-input {
+  padding: 8px 14px;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  width: 280px;
+  outline: none;
+  transition: border 0.2s;
 }
 
-.table-custom th {
-  background: #0d6efd;
-  color: white;
+.search-input:focus {
+  border-color: #1565c0;
+  box-shadow: 0 0 0 3px rgba(21,101,192,0.1);
+}
+
+/* ✅ Horizontal scroll for table on small screens */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+/* ✅ State messages */
+.state-msg {
   text-align: center;
-  font-weight: 600;
+  color: #888;
+  padding: 30px 0;
+  font-size: 15px;
 }
 
-.table-custom td {
-  vertical-align: middle;
-  text-align: center;
-  padding: 12px;
-}
-
-/* Button styling */
-.btn-update {
-  background-color: #0d6efd;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  transition: 0.3s;
-}
-
-.btn-update:hover {
-  background-color: #084298;
-}
-
-.btn-delete {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  transition: 0.3s;
-}
-
-.btn-delete:hover {
-  background-color: #b02a37;
-}
-
-/* Table row hover */
-.table-custom tbody tr:hover {
-  background-color: #eef4ff;
-  transition: 0.3s;
+.state-msg.error {
+  color: #c62828;
 }

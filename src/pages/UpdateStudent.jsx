@@ -1,149 +1,157 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./UpdateStudent.css";   // ✅ IMPORT CSS
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getStudentById, updateStudent } from "../services/adminService";
+import NavbarAdmin from "../components/NavbarAdmin";
+import "./UpdateStudent.css";
 
 export default function UpdateStudent() {
-  const navigate = useNavigate();
+  const { id }              = useParams();   // ✅ Read :id from URL
+  const navigate            = useNavigate();
 
-  const [regNo, setRegNo] = useState("");
   const [student, setStudent] = useState(null);
-  const [message, setMessage] = useState("");
+  const [error,   setError]   = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [saving,  setSaving]  = useState(false);
 
-  // Fetch student
-  const fetchStudent = async () => {
-    try {
-      const res = await fetch(`http://localhost:8080/api/students/${regNo}`);
-      if (!res.ok) {
-        setMessage("Student not found");
-        setStudent(null);
-        return;
+  // ✅ Auto-fetch student on mount using id from URL
+  useEffect(() => {
+    const fetchStudent = async () => {
+      setLoading(true);
+      try {
+        const res = await getStudentById(id);
+        setStudent(res.data);
+      } catch {
+        setError("Student not found. Please go back and try again.");
+      } finally {
+        setLoading(false);
       }
-      const data = await res.json();
-      setStudent(data);
-      setMessage("");
-    } catch (e) {
-      setMessage("Error fetching student");
-    }
+    };
+    fetchStudent();
+  }, [id]);
+
+  const handleChange = (e) => {
+    setStudent({ ...student, [e.target.name]: e.target.value });
+    setError("");
+    setSuccess("");
   };
 
-  // Update student
-  const updateStudent = async (e) => {
+  // ✅ Validation
+  const validate = () => {
+    if (!student.name?.trim())         return "Name is required.";
+    if (!student.age || student.age <= 0 || student.age > 100)
+                                       return "Enter a valid age (1–100).";
+    if (!student.studentClass?.trim()) return "Class is required.";
+    if (!student.email?.trim())        return "Email is required.";
+    if (!/\S+@\S+\.\S+/.test(student.email))
+                                       return "Enter a valid email address.";
+    return null;
+  };
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    try {
-      const res = await fetch(`http://localhost:8080/api/students/update/${regNo}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(student)
-      });
+    setError("");
+    setSuccess("");
 
-      if (res.ok) {
-        alert("Student Updated Successfully!");
-        navigate("/admin-dashboard");
-      } else {
-        setMessage("Update failed");
-      }
-    } catch (e) {
-      setMessage("Error updating student");
+    const validationError = validate();
+    if (validationError) { setError(validationError); return; }
+
+    setSaving(true);
+    try {
+      // ✅ Uses adminService — matches PUT /api/students/update/:regNo
+      await updateStudent(student.regNo, student);
+      setSuccess("Student updated successfully! ✅");
+      setTimeout(() => navigate("/admin/view-students"), 1500);
+    } catch {
+      setError("Failed to update student. Please try again.");
+    } finally {
+      setSaving(false);
     }
   };
 
-  return (
-    <div className="update-container">
-      <h2 className="update-title">Update Student</h2>
+  // ─── Loading state ───────────────────────────────────
+  if (loading) return (
+    <>
+      <NavbarAdmin />
+      <div className="update-container">
+        <p className="state-msg">Loading student data...</p>
+      </div>
+    </>
+  );
 
-      {/* Search box */}
-      <div className="search-box shadow-sm p-3">
-        <label className="form-label fw-bold">Enter Register Number:</label>
-        <input
-          type="text"
-          className="form-control"
-          value={regNo}
-          onChange={(e) => setRegNo(e.target.value)}
-        />
-        <button className="btn btn-primary mt-2" onClick={fetchStudent}>
-          Search
+  // ─── Error state (student not found) ────────────────
+  if (error && !student) return (
+    <>
+      <NavbarAdmin />
+      <div className="update-container">
+        <p className="state-msg error">{error}</p>
+        <button className="btn btn-secondary mt-3"
+          onClick={() => navigate("/admin/view-students")}>
+          ← Back to Students
         </button>
       </div>
+    </>
+  );
 
-      {/* Loaded student form */}
-      {student && (
-        <form onSubmit={updateStudent} className="update-card shadow">
+  return (
+    <>
+      <NavbarAdmin />
 
-          <p className="reg-display"><b>Reg No:</b> {student.regNo}</p>
+      <div className="update-container">
+        <div className="update-card shadow">
+          <h2 className="update-title">✏️ Update Student</h2>
 
-          <div className="mb-3">
-            <label>Name</label>
-            <input
-              type="text"
-              className="form-control"
-              value={student.name}
-              onChange={(e) => setStudent({ ...student, name: e.target.value })}
-            />
-          </div>
+          {/* ✅ Inline feedback */}
+          {error   && <div className="alert alert-danger  py-2">{error}</div>}
+          {success && <div className="alert alert-success py-2">{success}</div>}
 
-          <div className="mb-3">
-            <label>Age</label>
-            <input
-              type="number"
-              className="form-control"
-              value={student.age}
-              onChange={(e) => setStudent({ ...student, age: e.target.value })}
-            />
-          </div>
+          <p className="reg-display">
+            <b>Reg No:</b> {student.regNo}
+            <span className="reg-note">(cannot be changed)</span>
+          </p>
 
-          <div className="mb-3">
-            <label>Class</label>
-            <input
-              type="text"
-              className="form-control"
-              value={student.studentClass}
-              onChange={(e) =>
-                setStudent({ ...student, studentClass: e.target.value })
-              }
-            />
-          </div>
+          <form onSubmit={handleUpdate}>
+            {[
+              { label: "Name",    name: "name",         type: "text"     },
+              { label: "Age",     name: "age",          type: "number"   },
+              { label: "Class",   name: "studentClass", type: "text"     },
+              { label: "Email",   name: "email",        type: "email"    },
+              { label: "Address", name: "address",      type: "text"     },
+              // ✅ Fixed: type="password" instead of type="text"
+              { label: "New Password (leave blank to keep current)",
+                                  name: "password",     type: "password" },
+            ].map(({ label, name, type }) => (
+              <div className="mb-3" key={name}>
+                <label className="form-label">{label}</label>
+                <input
+                  type={type}
+                  name={name}
+                  className="form-control"
+                  value={student[name] || ""}
+                  onChange={handleChange}
+                />
+              </div>
+            ))}
 
-          <div className="mb-3">
-            <label>Email</label>
-            <input
-              type="email"
-              className="form-control"
-              value={student.email}
-              onChange={(e) => setStudent({ ...student, email: e.target.value })}
-            />
-          </div>
-
-          <div className="mb-3">
-            <label>Address</label>
-            <input
-              type="text"
-              className="form-control"
-              value={student.address}
-              onChange={(e) =>
-                setStudent({ ...student, address: e.target.value })
-              }
-            />
-          </div>
-
-          <div className="mb-3">
-            <label>Password</label>
-            <input
-              type="text"
-              className="form-control"
-              value={student.password}
-              onChange={(e) =>
-                setStudent({ ...student, password: e.target.value })
-              }
-            />
-          </div>
-
-          <button className="btn btn-success w-100 mt-2" type="submit">
-            Update Student
-          </button>
-        </form>
-      )}
-
-      {message && <p className="alert alert-info mt-3">{message}</p>}
-    </div>
+            <div className="update-actions">
+              <button
+                type="submit"
+                className="btn btn-success"
+                disabled={saving}
+              >
+                {saving ? "Saving..." : "Update Student"}
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => navigate("/admin/view-students")}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
   );
 }

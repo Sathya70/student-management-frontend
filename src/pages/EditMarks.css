@@ -1,0 +1,114 @@
+.edit-marks-container {
+  max-width: 520px;
+  margin: 30px auto;
+  padding: 0 16px 40px;
+}
+
+.edit-marks-card {
+  background: white;
+  border-radius: 14px;
+  padding: 28px 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  animation: fadeIn 0.4s ease;
+}
+
+.edit-marks-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #1a1a2e;
+}
+
+.regno-display {
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.regno-note {
+  font-size: 11px;
+  color: #999;
+  margin-left: 8px;
+}
+
+.subject-label {
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+/* ─── Live preview ─── */
+.marks-preview {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  background: #f0f4ff;
+  border: 1px solid #c5cae9;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.preview-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.preview-label {
+  font-size: 11px;
+  color: #888;
+}
+
+.preview-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+/* ─── Pass/Fail badge ─── */
+.badge-result {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge-result.pass { background: #e8f5e9; color: #2e7d32; }
+.badge-result.fail { background: #ffebee; color: #c62828; }
+
+/* ─── Actions ─── */
+.edit-marks-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-marks-actions .btn {
+  flex: 1;
+  height: 44px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ─── States ─── */
+.state-msg {
+  text-align: center;
+  color: #888;
+  padding: 40px 0;
+  font-size: 15px;
+}
+
+.state-msg.error { color: #c62828; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

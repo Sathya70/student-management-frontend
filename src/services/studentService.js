@@ -1,29 +1,21 @@
-const BASE_URL = "http://localhost:8080";
+import api from "./api";
 
-// STUDENT LOGIN
-export async function studentLogin(email, regNo, password) {
-  const response = await fetch(`${BASE_URL}/api/students/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, regNo, password }),
-  });
+// ─── AUTH ─────────────────────────────────────────────
+// ✅ Fixed: removed raw fetch + hardcoded BASE_URL
+// ✅ JWT token automatically attached via api.js interceptor
+export const studentLogin = (email, regNo, password) =>
+  api.post("/students/login", { email, regNo, password });
 
-  if (!response.ok) {
-    throw new Error("Login failed");
-  }
+// ✅ New: Forgot password — verify email + regNo
+export const forgotPassword = (email, regNo) =>
+  api.post("/students/forgot-password", { email, regNo });
 
-  return await response.json();
-}
+// ─── STUDENT PROFILE ──────────────────────────────────
+// ✅ New: Get student profile by regNo (for Student Profile page)
+export const getStudentProfile = (regNo) =>
+  api.get(`/students/${regNo}`);
 
-// GET MARKS BY REG NO
-export async function getMarksByRegNo(regNo) {
-  const response = await fetch(`${BASE_URL}/api/marks/regno/${regNo}`);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch marks");
-  }
-
-  const data = await response.json();
-  console.log("MARKS RESPONSE:", data);
-  return data;
-}
+// ─── MARKS ────────────────────────────────────────────
+// ✅ Fixed: removed raw fetch, removed console.log, uses api.js
+export const getMarksByRegNo = (regNo) =>
+  api.get(`/marks/regno/${regNo}`);
