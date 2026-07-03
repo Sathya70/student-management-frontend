@@ -1,66 +1,35 @@
 .add-marks-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 80px 16px 40px;
+  justify-content: center;
+  padding: 36px;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef2ff 100%);
 }
 
 .add-marks-card {
-  background: white;
-  padding: 30px;
-  width: 100%;
-  max-width: 460px;
-  border-radius: 15px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  animation: fadeIn 0.5s ease-in-out;
+  width: min(520px, 100%);
+  padding: 2.6rem;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(79, 70, 229, 0.12);
+  box-shadow: 0 28px 50px rgba(15, 23, 42, 0.12);
 }
 
 .add-marks-card h3 {
   text-align: center;
-  margin-bottom: 20px;
-  font-weight: 700;
-  font-size: 20px;
+  margin-bottom: 1.5rem;
+  font-size: 1.9rem;
+  font-weight: 800;
 }
 
 .form-control {
-  border-radius: 8px;
-  height: 44px;
+  margin-bottom: 1rem;
 }
 
-/* ✅ Live preview bar */
-.marks-preview {
-  display: flex;
-  justify-content: space-between;
-  background: #f0f4ff;
-  border: 1px solid #c5cae9;
-  border-radius: 8px;
-  padding: 10px 16px;
-  margin-bottom: 14px;
-  font-size: 14px;
-  color: #333;
-}
-
-.marks-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 4px;
-}
-
-.marks-actions .btn {
-  flex: 1;
-  height: 44px;
-  border-radius: 8px;
-  font-weight: 600;
-}
-
-.btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+.btn-primary {
+  height: auto;
+  padding: 14px 16px;
+  border-radius: 18px;
+  width: 100%;
 }

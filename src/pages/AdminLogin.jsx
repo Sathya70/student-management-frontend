@@ -1,93 +1,57 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { adminLogin } from "../services/adminService";
-import "./AdminLogin.css";
+import { useNavigate } from "react-router-dom";
+import "./AdminLogin.css";   // <-- IMPORTANT
 
 export default function AdminLogin() {
-  const [email, setEmail]       = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError]       = useState("");
-  const [loading, setLoading]   = useState(false);
-  const navigate                = useNavigate();
+    const [adminEmail, setAdminEmail] = useState("");
+    const [adminPassword, setAdminPassword] = useState("");
+    const navigate = useNavigate();
 
-  const handleAdminLogin = async () => {
-    setError("");
+    const handleAdminLogin = async () => {
+        const res = await fetch("http://localhost:8080/api/students/admin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: adminEmail,
+                password: adminPassword
+            })
+        });
 
-    // ✅ Frontend validation before API call
-    if (!email || !password) {
-      setError("Please enter both email and password.");
-      return;
-    }
+        if (res.ok) {
+            alert("Admin Login Successful");
+            navigate("/admin/dashboard");
+        } else {
+            alert("Invalid Credentials");
+        }
+    };
 
-    setLoading(true);
-    try {
-      const res = await adminLogin(email, password);
+    return (
+        <div className="admin-container">
+            <div className="admin-card">
+                <h2 className="admin-title">Admin Login</h2>
 
-      // ✅ Store JWT token — used by AdminProtectedRoute
-      // Backend returns { token, message } — adjust if your backend differs
-      const token = res.data?.token || "admin-logged-in";
-      localStorage.setItem("adminToken", token);
+                <input
+                    type="text"
+                    placeholder="Email"
+                    value={adminEmail}
+                    onChange={(e) => setAdminEmail(e.target.value)}
+                    className="admin-input"
+                />
 
-      navigate("/admin-dashboard");
-    } catch (err) {
-      // ✅ Show error inline instead of alert()
-      if (err.response?.status === 401) {
-        setError("Invalid email or password.");
-      } else {
-        setError("Server error. Please try again.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={adminPassword}
+                    onChange={(e) => setAdminPassword(e.target.value)}
+                    className="admin-input"
+                />
 
-  // ✅ Allow login on Enter key press
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") handleAdminLogin();
-  };
-
-  return (
-    <div className="admin-container">
-      <div className="admin-card">
-        <h2 className="admin-title">🔐 Admin Login</h2>
-
-        {/* ✅ Inline error message */}
-        {error && (
-          <div className="alert alert-danger py-2 text-center" role="alert">
-            {error}
-          </div>
-        )}
-
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className="admin-input"
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className="admin-input"
-        />
-
-        <button
-          onClick={handleAdminLogin}
-          className="admin-btn"
-          disabled={loading}
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
-
-        <p className="admin-back">
-          <Link to="/">← Back to Home</Link>
-        </p>
-      </div>
-    </div>
-  );
+                <button onClick={handleAdminLogin} className="admin-btn">
+                    Login
+                </button>
+            </div>
+        </div>
+    );
 }

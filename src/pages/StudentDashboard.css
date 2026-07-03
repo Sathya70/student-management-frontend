@@ -1,162 +1,43 @@
 .dashboard-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  padding: 48px 24px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 30px 16px 40px;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef2ff 100%);
 }
 
 .dashboard-card {
-  background: white;
-  border-radius: 16px;
-  padding: 28px 24px;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  animation: fadeIn 0.5s ease;
+  width: min(620px, 100%);
+  padding: 2.5rem;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 28px 50px rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(79, 70, 229, 0.12);
 }
 
-/* ─── Header ─── */
-.dashboard-header {
+.dashboard-card h2 {
+  text-align: center;
+  margin-bottom: 1.75rem;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.marks-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
+  gap: 1rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem 1.1rem;
+  background: rgba(79, 70, 229, 0.05);
+  border-radius: 18px;
+  border: 1px solid rgba(79, 70, 229, 0.12);
 }
 
-.dashboard-header h2 {
-  margin: 0;
-  font-size: 22px;
+.marks-row b {
+  display: inline-block;
+  min-width: 110px;
   font-weight: 700;
-}
-
-.btn-print {
-  padding: 7px 14px;
-  background: #1565c0;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-print:hover { background: #0d47a1; }
-
-/* ─── Subject cards grid ─── */
-.marks-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-@media (max-width: 480px) {
-  .marks-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-.marks-subject-card {
-  background: #f0f4ff;
-  border-radius: 10px;
-  padding: 12px 6px;
-  text-align: center;
-  border: 1px solid #c5cae9;
-}
-
-.subject-label {
-  font-size: 11px;
-  color: #666;
-  margin-bottom: 4px;
-}
-
-.subject-score {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1565c0;
-}
-
-.subject-max {
-  font-size: 10px;
-  color: #aaa;
-}
-
-/* ─── Summary row ─── */
-.marks-summary {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  background: #f9f9f9;
-  border-radius: 10px;
-  padding: 16px;
-  border: 1px solid #eee;
-}
-
-@media (max-width: 480px) {
-  .marks-summary { grid-template-columns: repeat(2, 1fr); }
-}
-
-.summary-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.summary-label {
-  font-size: 11px;
-  color: #888;
-}
-
-.summary-value {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1a1a2e;
-}
-
-/* ─── Pass/Fail badge ─── */
-.badge-result {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.badge-result.pass { background: #e8f5e9; color: #2e7d32; }
-.badge-result.fail { background: #ffebee; color: #c62828; }
-
-/* ─── States ─── */
-.state-msg {
-  text-align: center;
-  color: #888;
-  padding: 30px 0;
-  font-size: 15px;
-}
-
-.state-msg.error { color: #c62828; }
-
-/* ─── Print styles ─── */
-.print-header { display: none; }
-
-@media print {
-  .no-print    { display: none !important; }
-  .print-header {
-    display: block;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .dashboard-page {
-    background: white;
-    padding: 0;
-  }
-  .dashboard-card {
-    box-shadow: none;
-    padding: 0;
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  color: var(--text);
 }
